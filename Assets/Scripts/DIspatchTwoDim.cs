@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DIspatchTwoDim : MonoBehaviour
+public class DispatchTwoDim : MonoBehaviour
 {
     public ComputeShader computeShader;
     ComputeBuffer buffer;
