@@ -1,0 +1,11 @@
+﻿// Accessing group index, thread index in group and dispatch thread index
+#pragma kernel CSMain
+
+RWStructuredBuffer<int> buffer;
+
+[numthreads(4,1,1)]
+void CSMain (uint3 threadID : SV_GroupThreadID, uint3 groupID: SV_GroupID, uint3 dispatchID : SV_DispatchThreadID)
+{
+    //buffer[threadID.x + 4*groupID.x] = threadID.x;
+    buffer[dispatchID.x] = threadID.x;
+}
