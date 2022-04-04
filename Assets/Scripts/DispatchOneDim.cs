@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DispatchSimple : MonoBehaviour
+public class DispatchOneDim : MonoBehaviour
 {
     public ComputeShader compute;
    
     void Start()
     {
-        int kernel = compute.FindKernel("CSMain");
+        int kernel = compute.FindKernel("CSMain1");
 
         ComputeBuffer computeBuffer = new ComputeBuffer(2 * 4, sizeof(int));
         compute.SetBuffer(kernel, "buffer", computeBuffer);
@@ -18,14 +18,24 @@ public class DispatchSimple : MonoBehaviour
 
         int[] data = new int[8];
         computeBuffer.GetData(data);
+        int id = 0;
 
-        Debug.Log("[Dispatch Simple With Structured:");
-        for (int i=0; i<8; ++i)
+        System.Text.StringBuilder sb = new System.Text.StringBuilder("", 2*9 + 1);
+
+        for (int g=0; g<2; g++)
         {
-            Debug.Log(data[i]);
+            for (int t = 0; t < 4; t++)
+            {
+                sb.Append($"{data[id]} ");
+                id++;
+            }
+            sb.Append("\n");
         }
 
+        Debug.Log($"<color=yellow>local thread id [x]\n{sb.ToString()}</color>");
+
         computeBuffer.Release();
+        computeBuffer = null;
     }
 
 

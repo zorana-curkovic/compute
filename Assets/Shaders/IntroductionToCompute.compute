@@ -1,0 +1,43 @@
+﻿// Accessing group index, thread index in group, thread index in group flattened and dispatch thread index
+#pragma kernel CSMain1
+#pragma kernel CSMain2
+
+RWStructuredBuffer<int> buffer;
+
+[numthreads(4,1,1)]
+void CSMain1 (uint3 threadInGroupID : SV_GroupThreadID, uint3 dispatchID : SV_DispatchThreadID, uint3 groupID: SV_GroupID, uint flattenedThreadIndex : SV_GroupIndex )
+{
+    // These three local in group indexing are all equivalent for threads in the one dimension
+    
+    buffer[threadInGroupID.x + 4*groupID.x] = threadInGroupID.x;
+    //buffer[dispatchID.x] = threadInGroupID.x;
+    //buffer[flattenedThreadIndex + 4*groupID.x] = flattenedThreadIndex; 
+}
+
+// Accessing buffer data in two dimensions 
+
+RWStructuredBuffer<int> dispatchXID;
+RWStructuredBuffer<int> dispatchYID;
+RWStructuredBuffer<int> groupXID;
+RWStructuredBuffer<int> groupYID;
+RWStructuredBuffer<int> flattenedID;
+
+RWStructuredBuffer<int> threadInGroupXID;
+RWStructuredBuffer<int> threadInGroupYID;
+
+
+[numthreads(4,4,1)]
+void CSMain2 (uint3 threadInGroupID : SV_GroupThreadID, uint3 dispatchID : SV_DispatchThreadID, uint3 groupID : SV_GroupID, uint flatID : SV_GroupIndex)
+{
+    uint id = dispatchID.x + dispatchID.y * 8;
+    dispatchXID[id] = dispatchID.x;
+    dispatchYID[id] = dispatchID.y;
+
+    groupXID[id] = groupID.x;
+    groupYID[id] = groupID.y;
+
+    flattenedID[id] = flatID;
+
+    threadInGroupXID[id] = threadInGroupID.x;
+    threadInGroupYID[id] = threadInGroupID.y;
+}

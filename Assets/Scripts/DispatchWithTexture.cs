@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DispatchDefault : MonoBehaviour
+public class DispatchWithTexture : MonoBehaviour
 {
     public ComputeShader computeShader;
     public RenderTexture result;
