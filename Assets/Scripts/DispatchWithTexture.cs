@@ -18,6 +18,6 @@ public class DispatchWithTexture : MonoBehaviour
         
         computeShader.SetTexture(kernel, "Result", result);
         computeShader.Dispatch(kernel, 512/8, 512/8, 1);
-        renderer.material.SetTexture("_MainTex", result);
+        renderer.material.SetTexture("_BaseMap", result);
     }
 }
